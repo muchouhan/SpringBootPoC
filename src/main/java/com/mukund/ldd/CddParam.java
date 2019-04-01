@@ -14,17 +14,16 @@ public class CddParam extends DefaultParser {
 		
 		// create the Options
 		Options options = new Options();
-		//options.addOption("startDate", "all", true, "Last execution date.");
-		//options.addOption("endDate", "almost-all", true, "end date for records ..");
-		options.addOption("countryId", "all", true, "country for which LDD service to invoke");
+		options.addOption("country", true, "country for which LDD service to invoke");
+		
 		//HelpFormatter formatter = new HelpFormatter();
 		//formatter.printHelp("LdDaSApplication", options);
 		try {
 			// parse the command line arguments
 			cmd = parse(options, args);
 			
-			if (cmd.hasOption("countryId")) {
-				System.out.println("countryId:"+cmd.getOptionValue("countryId"));
+			if (cmd.hasOption("country")) {
+				System.out.println("country:"+cmd.getOptionValue("country"));
 			}
 			
 		} catch (ParseException exp) {
@@ -33,9 +32,9 @@ public class CddParam extends DefaultParser {
 
 	}
 	
-	public String getCountryId(){
-		if (cmd.hasOption("countryId")) {
-			return cmd.getOptionValue("countryId");
+	public String getCountryCode(){
+		if (cmd.hasOption("country")) {
+			return cmd.getOptionValue("country");
 		}else{
 			return "all";
 		}

@@ -33,7 +33,7 @@ public class LdDaSApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		CddParam param = new CddParam(args);
-		List<LddResult> response = service.retrieve(param.getCountryId());
+		List<LddResult> response = service.retrieve(param.getCountryCode());
 		String file = service.transform(response);
 		service.upload(file);
 		exit(0);
