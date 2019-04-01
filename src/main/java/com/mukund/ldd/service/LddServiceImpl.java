@@ -34,13 +34,13 @@ public class LddServiceImpl implements LddService {
 	}
 
 	@Override
-	public Boolean transform(List<LddResult> results) throws Exception {
+	public String transform(List<LddResult> results) throws Exception {
 		JAXBContext jaxbContext = JAXBContext.newInstance(LddResult.class);
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(results, new File("ldd.xml"));
 		
-		return true;
+		return "";
 	}
 
 	@Override

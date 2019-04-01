@@ -1,13 +1,16 @@
 package com.mukund.ldd;
 
+import static java.lang.System.exit;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.mukund.ldd.model.LddResult;
 import com.mukund.ldd.service.LddService;
-
-import static java.lang.System.exit;
 
 @SpringBootApplication
 public class LdDaSApplication implements CommandLineRunner {
@@ -30,14 +33,9 @@ public class LdDaSApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		CddParam param = new CddParam(args);
-		service.retrieve(args[0].toString());
-		
-		if (args.length > 0) {
-			//
-		} else {
-			//System.out.println(service.getMessage());
-		}
-
+		List<LddResult> response = service.retrieve(param.getCountryId());
+		String file = service.transform(response);
+		service.upload(file);
 		exit(0);
 
 	}

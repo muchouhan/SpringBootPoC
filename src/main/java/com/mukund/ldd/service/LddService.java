@@ -13,7 +13,7 @@ import com.mukund.ldd.model.LddResult;
 
 public interface LddService {
 	List<LddResult> retrieve(String countryId) throws Exception;
-	Boolean transform(List<LddResult> results)throws Exception;
+	String transform(List<LddResult> results)throws Exception;
 	Boolean upload(String file)throws Exception;
 	
 	default String startDate(){
