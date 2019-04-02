@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.mukund.ldd.builder.DateBuilder;
 import com.mukund.ldd.builder.FileBuilder;
@@ -20,23 +24,16 @@ public class LddServiceImpl implements LddService {
 	@Override
 	public List<LddResult> retrieve(String countryId) throws Exception {
 		DateBuilder date = new DateBuilder();
-		
 		System.out.println("Start date:"+date.getStartDate());
 		System.out.println("end date:"+date.getEndDate());
 		
-		List<LddResult> result = new ArrayList<>();
-
-		for (int i = 0; i < 5; i++) {
-			result.add(LddResult.builder().id(Integer.toString(i)).description("Desc").build());
-		}
-
-		return result;
-
-		// RestTemplate template = new RestTemplate();
-		// ResponseEntity<List<LddResult>> lddResponse =
-		// template.exchange(APIUrl.LDD_API.url(), HttpMethod.GET, null,
-		// new ParameterizedTypeReference<List<LddResult>>() {});
-		// return lddResponse.getBody();
+		RestTemplate template = new RestTemplate();
+		
+		ResponseEntity<List<LddResult>> response = template.exchange(prop.getRequiredProperty("ldd.app.url"), HttpMethod.GET, null, 
+				new ParameterizedTypeReference<List<LddResult>>() {});
+		
+		return response.getBody();
+		
 	}
 
 	@Override
