@@ -4,6 +4,10 @@ import static java.lang.System.exit;
 
 import java.util.List;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,14 +22,6 @@ public class LdDaSApplication implements CommandLineRunner {
 	@Autowired
 	private LddService service;
 
-	/**
-	 * Default application main to bootstrap the Spring Boot application
-	 * container.
-	 *
-	 * @param args
-	 *            default command line args
-	 */
-
 	public static void main(String[] args) {
 		SpringApplication.run(LdDaSApplication.class, args);
 	}
@@ -34,10 +30,37 @@ public class LdDaSApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		CddParam param = new CddParam(args);
 		List<LddResult> response = service.retrieve(param.getCountryCode());
-		String file = service.transform(response);
-		service.upload(file);
+		List<String> files = service.transform(response);
+		service.upload(files);
+		System.out.println("Job Completed!!!");
 		exit(0);
-
 	}
-
+	
+	private class CddParam extends DefaultParser {
+		CommandLine cmd;
+		public CddParam(String... args) {
+			// create the Options
+			Options options = new Options();
+			options.addOption("country", true, "country for which LDD service to invoke");
+			try {
+				// parse the command line arguments
+				cmd = parse(options, args);
+				
+				if (cmd.hasOption("country")) {
+					System.out.println("country:"+cmd.getOptionValue("country"));
+				}
+				
+			} catch (ParseException exp) {
+				System.out.println("Unexpected exception:" + exp.getMessage());
+			}
+		}
+		
+		public String getCountryCode(){
+			if (cmd.hasOption("country")) {
+				return cmd.getOptionValue("country");
+			}else{
+				return "all";
+			}
+		}
+	}
 }

@@ -1,15 +1,12 @@
 package com.mukund.ldd.model;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import lombok.Builder;
 
-@XmlRootElement(name = "result")
-public class LddResult {
-	
-	@XmlAttribute(name = "id")
-	private String productId;
-	
-	@XmlElement(name = "description")
+public @Builder class LddResult {
+	private String id;
 	private String description;
+	
+	public String message(){
+		return id+"~"+description;
+	}
 }
